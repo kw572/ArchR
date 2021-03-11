@@ -90,7 +90,7 @@ getFragmentsFromArrow <- function(
   ArrowFile <- .validArrow(ArrowFile)
 
   if(is.null(chr)){
-    chr <- .availableSeqnames(ArrowFile, subGroup = "Fragments")
+    chr <-c(.availableSeqnames(ArrowFile, subGroup = "Fragments"),NA)
   }
 
   if(any(chr %ni% .availableSeqnames(ArrowFile, subGroup = "Fragments"))){
@@ -159,7 +159,11 @@ getFragmentsFromArrow <- function(
   ArrowFile <- .validArrow(ArrowFile)
   
   avSeq <- .availableSeqnames(ArrowFile)
- 
+  
+   if(chr %ni% avSeq){
+    stop(paste0("Chromosome ", chr ," not in ArrowFile! Available Chromosomes are : ", paste0(avSeq, collapse=",")))
+  }
+  
   #Get Sample Name
   sampleName <- .h5read(ArrowFile, paste0("Metadata/Sample"), method = method)
 
